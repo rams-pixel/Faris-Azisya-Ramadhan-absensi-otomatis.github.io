@@ -1,379 +1,370 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Presensi Otomatis</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Presensi Otomatis</title>
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-        body {
-            min-height: 100vh;
-            background: 
-                radial-gradient(ellipse at 20% 20%, rgba(37, 99, 235, 0.18) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 80%, rgba(59, 130, 246, 0.12) 0%, transparent 50%),
-                linear-gradient(160deg, #0a0f1c 0%, #0f172a 40%, #1e3a8a 100%);
-            color: #f1f5f9;
-            font-family: 'Inter', system-ui, sans-serif;
-            padding: 40px 20px 60px;
-            overflow-x: hidden;
-        }
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-        }
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(ellipse at 20% 20%, rgba(37,99,235,.18) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(59,130,246,.12) 0%, transparent 50%),
+        linear-gradient(160deg,#0a0f1c 0%,#0f172a 40%,#1e3a8a 100%);
+    color: #f1f5f9;
+    font-family: 'Inter',system-ui,sans-serif;
+    padding: 40px 20px 60px;
+    overflow-x: hidden;
+}
 
-        /* Header */
-        .header {
-            text-align: center;
-            margin-bottom: 48px;
-        }
+.container {
+    max-width: 1100px;
+    margin: auto;
+}
 
-        .header h1 {
-            font-size: 2.2rem;
-            font-weight: 700;
-            letter-spacing: -0.8px;
-            background: linear-gradient(135deg, #ffffff 30%, #93c5fd 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 8px;
-        }
+.header {
+    text-align: center;
+    margin-bottom: 48px;
+}
 
-        .header p {
-            color: #94a3b8;
-            font-size: 0.95rem;
-        }
+.header h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    letter-spacing: -.8px;
+    background: linear-gradient(135deg,#fff 30%,#93c5fd 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+}
 
-        /* Center Area */
-        .center-area {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 40px;
-        }
+.header p {
+    color: #94a3b8;
+    font-size: .95rem;
+}
 
-        /* Card */
-        .card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 28px;
-            padding: 36px;
-            backdrop-filter: blur(24px);
-            box-shadow: 
-                0 25px 50px -12px rgba(0, 0, 0, 0.4),
-                inset 0 1px 0 rgba(255, 255, 255, 0.06);
-        }
+.center-area {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+}
 
-        /* Tap Page */
-        .tap-page {
-            width: 100%;
-            max-width: 420px;
-        }
+.card {
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 28px;
+    padding: 36px;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    box-shadow:
+        0 25px 50px -12px rgba(0,0,0,.4),
+        inset 0 1px 0 rgba(255,255,255,.06);
+}
 
-        .tap-area {
-            text-align: center;
-        }
+.tap-page {
+    width: 100%;
+    max-width: 420px;
+}
 
-        .tap-icon {
-            width: 88px;
-            height: 88px;
-            margin: 0 auto 24px;
-            background: linear-gradient(145deg, #3b82f6, #1d4ed8);
-            border-radius: 26px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 38px;
-            box-shadow: 
-                0 16px 32px -8px rgba(37, 99, 235, 0.5),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2);
-            position: relative;
-        }
+.tap-area {
+    text-align: center;
+}
 
-        .tap-icon::after {
-            content: '';
-            position: absolute;
-            inset: -6px;
-            border-radius: 30px;
-            background: linear-gradient(145deg, rgba(59, 130, 246, 0.4), transparent);
-            z-index: -1;
-            filter: blur(12px);
-            opacity: 0.7;
-        }
+.tap-icon {
+    width: 88px;
+    height: 88px;
+    margin: 0 auto 24px;
+    background: linear-gradient(145deg,#3b82f6,#1d4ed8);
+    border-radius: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 38px;
+    box-shadow: 0 16px 32px -8px rgba(37,99,235,.5);
+}
 
-        .tap-area h3 {
-            font-size: 1.4rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
+.tap-area h3 {
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+}
 
-        .tap-area p {
-            color: #94a3b8;
-            font-size: 0.9rem;
-            margin-bottom: 28px;
-            min-height: 22px;
-        }
+.tap-area p {
+    color: #94a3b8;
+    font-size: .9rem;
+    margin-bottom: 28px;
+    min-height: 22px;
+}
 
-        .scan-status.scanning { color: #fbbf24; }
-        .scan-status.success  { color: #4ade80; font-weight: 500; }
-        .scan-status.failed   { color: #f87171; }
+.scan-status.scanning {
+    color: #fbbf24;
+}
 
-        .student-select {
-            width: 100%;
-            margin-bottom: 20px;
-            padding: 15px 18px;
-            border: 1px solid rgba(148, 163, 184, 0.2);
-            border-radius: 16px;
-            background: rgba(15, 23, 42, 0.6);
-            color: white;
-            font-size: 0.95rem;
-            font-family: inherit;
-            outline: none;
-            cursor: pointer;
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2394a3b8' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 16px center;
-            transition: all 0.25s ease;
-        }
+.scan-status.success {
+    color: #4ade80;
+    font-weight: 500;
+}
 
-        .student-select:hover {
-            border-color: rgba(96, 165, 250, 0.4);
-        }
+.scan-status.failed {
+    color: #f87171;
+}
 
-        .student-select:focus {
-            border-color: #60a5fa;
-            box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.15);
-        }
+.student-select {
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 15px 18px;
+    border: 1px solid rgba(148,163,184,.2);
+    border-radius: 16px;
+    background: rgba(15,23,42,.6);
+    color: white;
+    font-size: .95rem;
+    outline: none;
+    cursor: pointer;
+}
 
-        .btn {
-            width: 100%;
-            padding: 16px;
-            border: none;
-            border-radius: 16px;
-            color: white;
-            font-size: 1rem;
-            font-weight: 600;
-            font-family: inherit;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+.student-select option {
+    background: #0f172a;
+    color: white;
+}
 
-        .btn-tap {
-            background: linear-gradient(135deg, #2563eb, #1d4ed8);
-            box-shadow: 0 12px 24px -6px rgba(37, 99, 235, 0.45);
-        }
+.btn {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 16px;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .3s;
+}
 
-        .btn-tap:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 18px 32px -6px rgba(37, 99, 235, 0.55);
-        }
+.btn-tap {
+    background: linear-gradient(135deg,#2563eb,#1d4ed8);
+    box-shadow: 0 12px 24px -6px rgba(37,99,235,.45);
+}
 
-        .btn-tap:disabled {
-            opacity: 0.65;
-            cursor: not-allowed;
-            transform: none;
-        }
+.btn-tap:hover {
+    transform: translateY(-3px);
+}
 
-        .btn-back {
-            background: rgba(71, 85, 105, 0.5);
-            margin-top: 24px;
-            border: 1px solid rgba(148, 163, 184, 0.15);
-        }
+.btn-tap:disabled {
+    opacity: .65;
+    cursor: not-allowed;
+}
 
-        .btn-back:hover {
-            background: rgba(71, 85, 105, 0.75);
-        }
+.btn-back {
+    background: rgba(71,85,105,.5);
+    margin-top: 24px;
+    border: 1px solid rgba(148,163,184,.15);
+}
 
-        /* Data Page */
-        .data-page {
-            display: none;
-            width: 100%;
-            max-width: 460px;
-        }
+.btn-back:hover {
+    background: rgba(71,85,105,.75);
+}
 
-        .attendance-result {
-            text-align: center;
-            margin-bottom: 28px;
-        }
+.data-page {
+    display: none;
+    width: 100%;
+    max-width: 460px;
+}
 
-        .attendance-check {
-            width: 84px;
-            height: 84px;
-            margin: 0 auto 14px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 40px;
-            font-weight: 700;
-            background: rgba(34, 197, 94, 0.12);
-            color: #4ade80;
-            border: 2.5px solid #4ade80;
-            box-shadow: 0 0 32px rgba(74, 222, 128, 0.25);
-        }
+.attendance-result {
+    text-align: center;
+    margin-bottom: 28px;
+}
 
-        .attendance-result-text {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #e2e8f0;
-        }
+.attendance-check {
+    width: 84px;
+    height: 84px;
+    margin: 0 auto 14px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    font-weight: 700;
+    background: rgba(34,197,94,.12);
+    color: #4ade80;
+    border: 2.5px solid #4ade80;
+    box-shadow: 0 0 32px rgba(74,222,128,.25);
+}
 
-        .photo-frame {
-            display: none;
-            margin: 0 auto 28px;
-            width: max-content;
-        }
+.attendance-result-text {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #e2e8f0;
+}
 
-        .student-photo {
-            width: 148px;
-            height: 148px;
-            object-fit: cover;
-            border-radius: 22px;
-            border: 3px solid rgba(96, 165, 250, 0.4);
-            box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.4);
-        }
+.photo-frame {
+    display: none;
+    margin: 0 auto 28px;
+    width: max-content;
+}
 
-        .data-row {
-            display: grid;
-            grid-template-columns: 120px 1fr;
-            padding: 13px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-            font-size: 0.93rem;
-        }
+.student-photo {
+    width: 148px;
+    height: 148px;
+    object-fit: cover;
+    border-radius: 22px;
+    border: 3px solid rgba(96,165,250,.4);
+    box-shadow: 0 16px 32px -8px rgba(0,0,0,.4);
+}
 
-        .data-row:last-of-type {
-            border-bottom: none;
-        }
+.data-row {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    padding: 13px 0;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    font-size: .93rem;
+}
 
-        .label {
-            color: #94a3b8;
-            font-weight: 500;
-        }
+.label {
+    color: #94a3b8;
+    font-weight: 500;
+}
 
-        .value {
-            font-weight: 600;
-            color: #f8fafc;
-        }
+.value {
+    font-weight: 600;
+    color: #f8fafc;
+}
 
-        .status {
-            margin-top: 24px;
-            padding: 15px;
-            text-align: center;
-            border-radius: 16px;
-            background: rgba(34, 197, 94, 0.12);
-            color: #4ade80;
-            font-weight: 600;
-            border: 1px solid rgba(74, 222, 128, 0.2);
-        }
+.status {
+    margin-top: 24px;
+    padding: 15px;
+    text-align: center;
+    border-radius: 16px;
+    background: rgba(34,197,94,.12);
+    color: #4ade80;
+    font-weight: 600;
+    border: 1px solid rgba(74,222,128,.2);
+    font-size: .95rem;
+}
 
-        .qrcode-box {
-            display: none;
-            margin: 24px auto 0;
-            padding: 16px;
-            background: white;
-            border-radius: 18px;
-            width: max-content;
-            box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.35);
-        }
+.qrcode-box {
+    display: none;
+    margin: 24px auto 0;
+    padding: 16px;
+    background: white;
+    border-radius: 18px;
+    width: max-content;
+    box-shadow: 0 12px 28px -6px rgba(0,0,0,.35);
+}
 
-        /* Riwayat */
-        .history-card {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.07);
-            border-radius: 24px;
-            padding: 28px;
-            backdrop-filter: blur(20px);
-        }
+.history-card {
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 24px;
+    padding: 28px;
+    backdrop-filter: blur(20px);
+}
 
-        .history-card h2 {
-            font-size: 1.15rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+.history-card h2 {
+    font-size: 1.15rem;
+    margin-bottom: 20px;
+}
 
-        .table-wrapper {
-            overflow-x: auto;
-            border-radius: 14px;
-        }
+.table-wrapper {
+    overflow-x: auto;
+    border-radius: 14px;
+}
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 780px;
-            font-size: 0.87rem;
-        }
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 780px;
+    font-size: .87rem;
+}
 
-        th {
-            background: rgba(37, 99, 235, 0.25);
-            padding: 14px 12px;
-            text-align: left;
-            font-weight: 600;
-            color: #bfdbfe;
-            white-space: nowrap;
-        }
+th {
+    background: rgba(37,99,235,.25);
+    padding: 14px 12px;
+    text-align: left;
+    color: #bfdbfe;
+    white-space: nowrap;
+}
 
-        td {
-            padding: 14px 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            color: #e2e8f0;
-        }
+td {
+    padding: 14px 12px;
+    border-bottom: 1px solid rgba(255,255,255,.05);
+    color: #e2e8f0;
+}
 
-        tr:hover td {
-            background: rgba(255, 255, 255, 0.03);
-        }
+.hadir {
+    display: inline-block;
+    background: rgba(22,163,74,.2);
+    color: #4ade80;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: .78rem;
+    font-weight: 600;
+}
 
-        .hadir {
-            display: inline-block;
-            background: rgba(22, 163, 74, 0.2);
-            color: #4ade80;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.78rem;
-            font-weight: 600;
-        }
+.kosong {
+    text-align: center;
+    color: #94a3b8;
+    padding: 48px 20px;
+}
 
-        .kosong {
-            text-align: center;
-            color: #94a3b8;
-            padding: 48px 20px;
-        }
+.page-visible {
+    animation: fadeUp .45s ease both;
+}
 
-        /* Animasi */
-        .page-visible {
-            animation: fadeUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
-        }
+.page-hiding {
+    animation: fadeOut .22s ease both;
+}
 
-        .page-hiding {
-            animation: fadeOut 0.22s ease both;
-        }
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
 
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(20px) scale(0.96); }
-            to   { opacity: 1; transform: translateY(0) scale(1); }
-        }
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-12px);
+    }
+}
 
-        @keyframes fadeOut {
-            from { opacity: 1; transform: translateY(0); }
-            to   { opacity: 0; transform: translateY(-12px); }
-        }
+@media(max-width:640px) {
+    .header h1 {
+        font-size: 1.75rem;
+    }
 
-        @media (max-width: 640px) {
-            .header h1 { font-size: 1.75rem; }
-            body { padding: 24px 16px 48px; }
-            .card { padding: 28px 22px; }
-        }
-    </style>
+    body {
+        padding: 24px 16px 48px;
+    }
+
+    .card {
+        padding: 28px 22px;
+    }
+
+    .tap-icon {
+        width: 76px;
+        height: 76px;
+        font-size: 32px;
+    }
+}
+</style>
 </head>
+
 <body>
 
 <div class="container">
@@ -385,82 +376,119 @@
 
     <div class="center-area">
 
-        <!-- Halaman Tap -->
+        <!-- HALAMAN TAP -->
         <div class="card tap-page" id="tapPage">
             <div class="tap-area">
-                <div class="tap-icon">💳</div>
-                <h3>Silakan Tap Kartu</h3>
-                <p class="scan-status" id="reader">Menunggu kartu...</p>
 
-                <select class="student-select" id="pilihSiswa" onchange="gantiSiswa(this.value)">
+                <div class="tap-icon">💳</div>
+
+                <h3>Silakan Tap Kartu</h3>
+
+                <p class="scan-status" id="reader">
+                    Menunggu kartu...
+                </p>
+
+                <select
+                    class="student-select"
+                    id="pilihSiswa"
+                    onchange="gantiSiswa(this.value)">
                 </select>
 
-                <button class="btn btn-tap" id="btnTap" onclick="tapKartu()">
+                <button
+                    class="btn btn-tap"
+                    id="btnTap"
+                    onclick="tapKartu()">
                     TAP KARTU
                 </button>
+
             </div>
         </div>
 
-        <!-- Halaman Data (tengah) -->
+        <!-- HALAMAN DATA LENGKAP -->
         <div class="card data-page" id="dataPage">
+
             <div class="attendance-result">
                 <div class="attendance-check">✓</div>
-                <div class="attendance-result-text">Kartu berhasil di-tap</div>
+                <div class="attendance-result-text">
+                    Kartu berhasil di-tap
+                </div>
             </div>
 
             <div class="photo-frame" id="fotoFrame">
-                <img class="student-photo" id="fotoSiswa" src="taps.jpeg" alt="Foto siswa">
+                <img
+                    class="student-photo"
+                    id="fotoSiswa"
+                    src="tes.jpeg"
+                    alt="Foto siswa">
             </div>
 
             <div class="data-row">
                 <span class="label">Nama</span>
                 <span class="value" id="nama">-</span>
             </div>
+
             <div class="data-row">
                 <span class="label">No. Absen</span>
                 <span class="value" id="absen">-</span>
             </div>
+
             <div class="data-row">
                 <span class="label">NIS</span>
                 <span class="value" id="nis">-</span>
             </div>
+
             <div class="data-row">
                 <span class="label">Kelas</span>
                 <span class="value" id="kelas">-</span>
             </div>
+
             <div class="data-row">
                 <span class="label">Jurusan</span>
                 <span class="value" id="jurusan">-</span>
             </div>
+
             <div class="data-row">
                 <span class="label">Tanggal</span>
                 <span class="value" id="tanggal">-</span>
             </div>
+
             <div class="data-row">
                 <span class="label">Jam</span>
                 <span class="value" id="jam">-</span>
             </div>
+
             <div class="data-row">
                 <span class="label">Metode</span>
                 <span class="value" id="metode">-</span>
             </div>
 
-            <div class="status" id="status">PRESENSI BERHASIL — Hadir</div>
+            <div class="status" id="status">
+                PRESENSI BERHASIL — Hadir
+            </div>
 
-            <button class="btn btn-back" onclick="kembaliKeTap()">KEMBALI KE TAP KARTU</button>
+            <button
+                class="btn btn-back"
+                onclick="kembaliKeTap()">
+                KEMBALI KE TAP KARTU
+            </button>
 
+            <!-- QR SISWA -->
             <div class="qrcode-box" id="qrcodeBox">
                 <div id="qrcode"></div>
             </div>
+
         </div>
 
     </div>
 
-    <!-- Riwayat hanya di halaman awal -->
+    <!-- RIWAYAT PRESENSI -->
     <div class="history-card" id="riwayatPage">
+
         <h2>📊 Riwayat Presensi</h2>
+
         <div class="table-wrapper">
             <table>
+
                 <thead>
                     <tr>
                         <th>No</th>
@@ -476,13 +504,18 @@
                         <th>Persetujuan</th>
                     </tr>
                 </thead>
+
                 <tbody id="riwayat">
                     <tr>
-                        <td colspan="11" class="kosong">Belum ada data presensi</td>
+                        <td colspan="11" class="kosong">
+                            Belum ada data presensi
+                        </td>
                     </tr>
                 </tbody>
+
             </table>
         </div>
+
     </div>
 
 </div>
@@ -490,184 +523,482 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <script>
+
 let nomor = 0;
 let siswaAktif = null;
+let siswaKartu = null;
 
+/* URL WEBSITE */
+const URL_WEBSITE =
+"https://rams-pixel.github.io/Faris-Azisya-Ramadhan-absensi-otomatis.github.io/";
+
+/* KODE QR UNIK SETIAP SISWA */
 const kodeQR = [
-    "RPL11-X7K9","RPL11-M4Q2","RPL11-Z8P5","RPL11-H3N7","RPL11-B6T1",
-    "RPL11-V9C4","RPL11-K2W8","RPL11-D5Y3","RPL11-J8R6","RPL11-P4L9",
-    "RPL11-Q7M2","RPL11-F6X8","RPL11-A3S5","RPL11-N9D1","RPL11-T2G7",
-    "RPL11-W5H4","RPL11-C8V2","RPL11-Y3K6","RPL11-L7B9","RPL11-G4P1",
-    "RPL11-S6J8","RPL11-E2Q5","RPL11-U9F3","RPL11-I5N7","RPL11-R8A4",
-    "RPL11-X1D6","RPL11-M7T2","RPL11-Z4C9","RPL11-H6W3","RPL11-B2Y8",
-    "RPL11-V5K1","RPL11-D9P6","RPL11-J3L7","RPL11-Q8S4"
+    "RPL11-X7K9",
+    "RPL11-M4Q2",
+    "RPL11-Z8P5",
+    "RPL11-H3N7",
+    "RPL11-B6T1",
+    "RPL11-V9C4",
+    "RPL11-K2W8",
+    "RPL11-D5Y3",
+    "RPL11-J8R6",
+    "RPL11-P4L9",
+    "RPL11-Q7M2",
+    "RPL11-F6X8",
+    "RPL11-A3S5",
+    "RPL11-N9D1",
+    "RPL11-T2G7",
+    "RPL11-W5H4",
+    "RPL11-C8V2",
+    "RPL11-Y3K6",
+    "RPL11-L7B9",
+    "RPL11-G4P1",
+    "RPL11-S6J8",
+    "RPL11-E2Q5",
+    "RPL11-U9F3",
+    "RPL11-I5N7",
+    "RPL11-R8A4",
+    "RPL11-X1D6",
+    "RPL11-M7T2",
+    "RPL11-Z4C9",
+    "RPL11-H6W3",
+    "RPL11-B2Y8",
+    "RPL11-V5K1",
+    "RPL11-D9P6",
+    "RPL11-J3L7",
+    "RPL11-Q8S4"
 ];
 
-const daftarSiswa = Array.from({ length: 34 }, (_, i) => ({
-    nama: `Siswa ${i + 1}`,
-    absen: String(i + 1),
-    nis: "10250156",
-    kelas: "XI",
-    jurusan: "RPL",
-    qrCode: kodeQR[i],
-    foto: i === 4 ? "taps.jpeg" : i === 9 ? "dodol.jpeg" : i === 19 ? "mi.jpeg" : "tes.jpeg"
-}));
+/* DATA 34 SISWA */
+const daftarSiswa = Array.from(
+    { length: 34 },
+    (_, i) => ({
+        nama: `Siswa ${i + 1}`,
+        absen: String(i + 1),
+        nis: "10250156",
+        kelas: "XI",
+        jurusan: "RPL",
+        qrCode: kodeQR[i],
+        foto:
+            i === 4
+                ? "taps.jpeg"
+                : i === 9
+                ? "dodol.jpeg"
+                : i === 19
+                ? "mi.jpeg"
+                : "tes.jpeg"
+    })
+);
+
+/* DATA SISWA KHUSUS */
 
 daftarSiswa[4].nama = "Althafa Rezka F";
-daftarSiswa[4].nis  = "3107820643";
+daftarSiswa[4].nis = "3107820643";
+daftarSiswa[4].foto = "taps.jpeg";
 
 daftarSiswa[9].nama = "Pando";
-daftarSiswa[9].nis  = "10250155";
+daftarSiswa[9].nis = "10250155";
 daftarSiswa[9].foto = "dodol.jpeg";
-
-daftarSiswa[19].nama = "Helmi";
-daftarSiswa[19].nis  = "10250165";
 
 daftarSiswa[11].nama = "Faris Azisya Ramadhan";
 
-let siswaKartu = daftarSiswa.find(s => s.absen === "5");
-siswaAktif = siswaKartu;
+daftarSiswa[19].nama = "Helmi";
+daftarSiswa[19].nis = "10250165";
+daftarSiswa[19].foto = "mi.jpeg";
 
-const pilihSiswa = document.getElementById("pilihSiswa");
-daftarSiswa.forEach(s => {
-    pilihSiswa.add(new Option(`${s.absen} - ${s.nama}`, s.absen));
+
+/* ISI DROPDOWN SISWA */
+
+const pilihSiswa =
+document.getElementById("pilihSiswa");
+
+daftarSiswa.forEach(siswa => {
+
+    pilihSiswa.add(
+        new Option(
+            `${siswa.absen} - ${siswa.nama}`,
+            siswa.absen
+        )
+    );
+
 });
-pilihSiswa.value = "5";
+
+
+/* GANTI SISWA */
 
 function gantiSiswa(absen) {
-    siswaKartu = daftarSiswa.find(s => s.absen === absen);
+
+    siswaKartu =
+        daftarSiswa.find(
+            siswa => siswa.absen === absen
+        );
+
     siswaAktif = siswaKartu;
-    const r = document.getElementById("reader");
-    r.textContent = "Menunggu kartu...";
-    r.className = "scan-status";
+
+    const reader =
+        document.getElementById("reader");
+
+    reader.textContent =
+        "Menunggu kartu...";
+
+    reader.className =
+        "scan-status";
 }
 
-function buatQRCode() {
-    document.getElementById("qrcode").innerHTML = "";
 
-    // QR berisi URL → langsung buka halaman web saat discan
-    const url = `https://presensi-otomatis.netlify.app/?nama=${encodeURIComponent(siswaAktif.nama)}&absen=${siswaAktif.absen}&nis=${siswaAktif.nis}&kelas=${siswaAktif.kelas}&jurusan=${siswaAktif.jurusan}&waktu=${encodeURIComponent(new Date().toLocaleString('id-ID'))}`;
+/* ISI DATA LENGKAP SISWA */
 
-    new QRCode(document.getElementById("qrcode"), {
-        text: url,
-        width: 140,
-        height: 140,
-        correctLevel: QRCode.CorrectLevel.M
-    });
+function isiDataSiswa(metode = "QR Code") {
 
-    document.getElementById("qrcodeBox").style.display = "block";
-}
+    if (!siswaAktif) return;
 
-function pindahHalaman(hideIds, showIds) {
-    hideIds.forEach(id => {
-        const el = document.getElementById(id);
-        if (!el) return;
-        el.classList.add("page-hiding");
-        setTimeout(() => {
-            el.style.display = "none";
-            el.classList.remove("page-hiding");
-        }, 220);
-    });
-
-    setTimeout(() => {
-        showIds.forEach(id => {
-            const el = document.getElementById(id);
-            if (!el) return;
-            el.style.display = "block";
-            el.classList.add("page-visible");
-            setTimeout(() => el.classList.remove("page-visible"), 450);
-        });
-    }, 220);
-}
-
-function tampilkanDataPage() {
-    pindahHalaman(["tapPage", "riwayatPage"], ["dataPage"]);
-}
-
-function kembaliKeTap() {
-    pindahHalaman(["dataPage"], ["tapPage", "riwayatPage"]);
-}
-
-function tapKartu() {
-    const reader = document.getElementById("reader");
-    const btn = document.getElementById("btnTap");
-
-    reader.textContent = "Scanning...";
-    reader.className = "scan-status scanning";
-    btn.disabled = true;
-
-    setTimeout(() => {
-        try {
-            if (!siswaKartu) throw new Error("Kartu tidak terdaftar");
-
-            siswaAktif = siswaKartu;
-            document.getElementById("fotoSiswa").src = siswaAktif.foto;
-            document.getElementById("fotoFrame").style.display = "block";
-
-            reader.textContent = "Kartu berhasil dibaca";
-            reader.className = "scan-status success";
-
-            // Jeda 3 detik
-            setTimeout(() => {
-                tampilkanDataPage();
-                catatPresensi("Kartu");
-                btn.disabled = false;
-            }, 3000);
-
-        } catch (e) {
-            reader.textContent = "Scan gagal, cobalah lagi";
-            reader.className = "scan-status failed";
-            btn.disabled = false;
-        }
-    }, 2500);
-}
-
-function catatPresensi(metode) {
     const waktu = new Date();
-    const hari = waktu.getDay();
 
-    if (hari === 0 || hari === 6) {
-        document.getElementById("status").textContent = "Presensi hanya berlaku Senin–Jumat";
-        return;
-    }
+    document.getElementById("nama").textContent =
+        siswaAktif.nama;
 
-    document.getElementById("nama").textContent    = siswaAktif.nama;
-    document.getElementById("absen").textContent   = siswaAktif.absen;
-    document.getElementById("nis").textContent     = siswaAktif.nis;
-    document.getElementById("kelas").textContent   = siswaAktif.kelas;
-    document.getElementById("jurusan").textContent = siswaAktif.jurusan;
-    document.getElementById("tanggal").textContent = waktu.toLocaleDateString("id-ID");
-    document.getElementById("jam").textContent     = waktu.toLocaleTimeString("id-ID");
-    document.getElementById("metode").textContent  = metode;
+    document.getElementById("absen").textContent =
+        siswaAktif.absen;
 
-    document.getElementById("fotoSiswa").src = siswaAktif.foto;
-    document.getElementById("fotoFrame").style.display = "block";
+    document.getElementById("nis").textContent =
+        siswaAktif.nis;
+
+    document.getElementById("kelas").textContent =
+        siswaAktif.kelas;
+
+    document.getElementById("jurusan").textContent =
+        siswaAktif.jurusan;
+
+    document.getElementById("tanggal").textContent =
+        waktu.toLocaleDateString("id-ID");
+
+    document.getElementById("jam").textContent =
+        waktu.toLocaleTimeString("id-ID");
+
+    document.getElementById("metode").textContent =
+        metode;
+
+    document.getElementById("fotoSiswa").src =
+        siswaAktif.foto;
+
+    document.getElementById("fotoFrame").style.display =
+        "block";
+
+    document.getElementById("status").textContent =
+        "PRESENSI BERHASIL — Hadir";
 
     buatQRCode();
 
-    document.getElementById("status").textContent = "PRESENSI BERHASIL — Hadir";
+}
 
-    nomor++;
-    if (nomor === 1) {
-        document.getElementById("riwayat").innerHTML = "";
+
+/* BUAT QR BERBEDA SETIAP SISWA */
+
+function buatQRCode() {
+
+    const qrcode =
+        document.getElementById("qrcode");
+
+    qrcode.innerHTML = "";
+
+    /*
+       QR langsung menuju data siswa.
+       Contoh:
+       website/?absen=5
+       website/?absen=10
+       website/?absen=20
+    */
+
+    const urlSiswa =
+        URL_WEBSITE +
+        "?absen=" +
+        encodeURIComponent(siswaAktif.absen);
+
+    new QRCode(qrcode, {
+
+        text: urlSiswa,
+
+        width: 180,
+
+        height: 180,
+
+        correctLevel: QRCode.CorrectLevel.M
+
+    });
+
+    document.getElementById("qrcodeBox")
+        .style.display = "block";
+
+}
+
+
+/* PINDAH HALAMAN */
+
+function pindahHalaman(hideIds, showIds) {
+
+    hideIds.forEach(id => {
+
+        const el =
+            document.getElementById(id);
+
+        if (!el) return;
+
+        el.classList.add("page-hiding");
+
+        setTimeout(() => {
+
+            el.style.display = "none";
+
+            el.classList.remove("page-hiding");
+
+        }, 220);
+
+    });
+
+    setTimeout(() => {
+
+        showIds.forEach(id => {
+
+            const el =
+                document.getElementById(id);
+
+            if (!el) return;
+
+            el.style.display = "block";
+
+            el.classList.add("page-visible");
+
+            setTimeout(() => {
+
+                el.classList.remove("page-visible");
+
+            }, 450);
+
+        });
+
+    }, 220);
+
+}
+
+
+/* TAMPILKAN DATA */
+
+function tampilkanDataPage() {
+
+    pindahHalaman(
+        ["tapPage", "riwayatPage"],
+        ["dataPage"]
+    );
+
+}
+
+
+/* KEMBALI KE TAP */
+
+function kembaliKeTap() {
+
+    history.replaceState(
+        {},
+        "",
+        window.location.pathname
+    );
+
+    pindahHalaman(
+        ["dataPage"],
+        ["tapPage", "riwayatPage"]
+    );
+
+}
+
+
+/* SIMULASI TAP KARTU */
+
+function tapKartu() {
+
+    const reader =
+        document.getElementById("reader");
+
+    const btn =
+        document.getElementById("btnTap");
+
+    reader.textContent =
+        "Scanning...";
+
+    reader.className =
+        "scan-status scanning";
+
+    btn.disabled = true;
+
+    setTimeout(() => {
+
+        if (!siswaKartu) {
+
+            reader.textContent =
+                "Scan gagal, cobalah lagi";
+
+            reader.className =
+                "scan-status failed";
+
+            btn.disabled = false;
+
+            return;
+
+        }
+
+        siswaAktif = siswaKartu;
+
+        reader.textContent =
+            "Kartu berhasil dibaca";
+
+        reader.className =
+            "scan-status success";
+
+        setTimeout(() => {
+
+            tampilkanDataPage();
+
+            catatPresensi("Kartu");
+
+            btn.disabled = false;
+
+        }, 3000);
+
+    }, 2500);
+
+}
+
+
+/* CATAT PRESENSI */
+
+function catatPresensi(metode) {
+
+    const waktu = new Date();
+
+    const hari = waktu.getDay();
+
+    isiDataSiswa(metode);
+
+    if (hari === 0 || hari === 6) {
+
+        document.getElementById("status")
+            .textContent =
+            "Presensi hanya berlaku Senin–Jumat";
+
+        return;
+
     }
 
-    document.getElementById("riwayat").innerHTML += `
+    nomor++;
+
+    if (nomor === 1) {
+
+        document.getElementById("riwayat")
+            .innerHTML = "";
+
+    }
+
+    document.getElementById("riwayat")
+        .innerHTML += `
+
         <tr>
+
             <td>${nomor}</td>
+
             <td>${siswaAktif.nama}</td>
+
             <td>${siswaAktif.absen}</td>
+
             <td>${siswaAktif.nis}</td>
+
             <td>${siswaAktif.kelas}</td>
+
             <td>${siswaAktif.jurusan}</td>
+
             <td>${waktu.toLocaleDateString("id-ID")}</td>
+
             <td>${waktu.toLocaleTimeString("id-ID")}</td>
+
             <td>${metode}</td>
-            <td><span class="hadir">Hadir</span></td>
+
+            <td>
+                <span class="hadir">Hadir</span>
+            </td>
+
             <td>—</td>
+
         </tr>
+
     `;
+
 }
+
+
+/* SAAT WEBSITE DIBUKA */
+
+window.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+        const absenQR =
+            params.get("absen");
+
+        /*
+           JIKA ADA ?absen=...
+           LANGSUNG TAMPILKAN DATA LENGKAP
+        */
+
+        if (absenQR) {
+
+            const siswaQR =
+                daftarSiswa.find(
+                    siswa => siswa.absen === absenQR
+                );
+
+            if (siswaQR) {
+
+                siswaKartu = siswaQR;
+
+                siswaAktif = siswaQR;
+
+                pilihSiswa.value =
+                    absenQR;
+
+                isiDataSiswa("QR Code");
+
+                document.getElementById("tapPage")
+                    .style.display = "none";
+
+                document.getElementById("riwayatPage")
+                    .style.display = "none";
+
+                document.getElementById("dataPage")
+                    .style.display = "block";
+
+            }
+
+        } else {
+
+            /*
+               JIKA TIDAK DARI QR,
+               TAMPILKAN HALAMAN TAP
+            */
+
+            gantiSiswa("5");
+
+            pilihSiswa.value = "5";
+
+        }
+
+    }
+);
+
 </script>
+
 </body>
 </html>
