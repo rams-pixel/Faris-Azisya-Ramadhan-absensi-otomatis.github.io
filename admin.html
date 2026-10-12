@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Absensi | SMK Nusantara 1</title>
+
+    <style>
+:root {
+    --navy: #102b60;
+    --dark: #0b214b;
+    --blue: #1479ed;
+    --blue-dark: #0d5fc5;
+    --bg: #edf4fd;
+    --white: #ffffff;
+    --text: #18345f;
+    --muted: #7186a7;
+    --green: #10a879;
+    --red: #ef4444;
+    --yellow: #f5ad18;
+    --purple: #8b5cf6;
+    --line: #dce8f8;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+button, input, select { font-family: inherit; }
+
+.app { display: flex; min-height: 100vh; }
+
+/* SIDEBAR */
+.sidebar {
+    width: 260px;
+    background: linear-gradient(180deg, var(--navy), var(--dark));
+    color: white;
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+}
+
+.brand { margin-bottom: 35px; }
+.brand h2 { font-size: 16px; margin-bottom: 5px; }
+.brand p  { color: #c7d8f4; font-size: 11px; }
+
+.nav { display: grid; gap: 7px; }
+
+.nav button {
+    width: 100%;
+    border: none;
+    background: transparent;
+    color: #e3edff;
+    text-align: left;
+    padding: 13px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: .2s;
+}
+
+.nav button:hover,
+.nav button.active { background: var(--blue); color: white; }
+
+/* MAIN */
+.main { flex: 1; min-width: 0; }
+
+.topbar {
+    min-height: 76px;
+    background: #f9fbff;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 28px;
+    gap: 15px;
+}
+
+.topbar-left { display: flex; align-items: center; gap: 15px; }
+
+.welcome h1 { font-size: 20px; margin-bottom: 5px; }
+.welcome p  { color: var(--muted); font-size: 12px; }
+
+.admin-info { display: flex; align-items: center; gap: 15px; font-size: 13px; font-weight: 600; }
+
+.datetime { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
+.datetime .date { font-size: 11px; color: var(--muted); white-space: nowrap; }
+.datetime .time { font-size: 17px; font-weight: 700; color: var(--text); letter-spacing: 1px; }
+
+.menu-toggle {
+    display: none;
+    border: none;
+    background: none;
+    color: var(--text);
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.content { padding: 24px; }
+
+.page { display: none; }
+.page.active { display: block; }
+
+/* STATISTIK */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 22px;
+}
+
+.stat {
+    background: white;
+    border: 1px solid #e4edf9;
+    border-radius: 11px;
+    padding: 17px;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    box-shadow: 0 4px 14px #244a7810;
+}
+
+.stat-icon {
+    width: 65px;
+    height: 48px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.blue   { background: var(--blue); }
+.yellow { background: var(--yellow); }
+.red    { background: var(--red); }
+.green  { background: var(--green); }
+
+.stat-label { font-size: 12px; color: #5b7192; margin-bottom: 6px; }
+.stat-value { font-size: 25px; font-weight: 700; }
+.stat-note  { font-size: 10px; color: var(--muted); margin-top: 7px; }
+
+.banner {
+    background: linear-gradient(105deg, #0756bd, #1688f5);
+    color: white;
+    border-radius: 11px;
+    padding: 28px 30px;
+    margin-bottom: 22px;
+}
+
+.banner h2 { font-size: 24px; margin-bottom: 9px; }
+.banner p  { font-size: 13px; color: #e2efff; }
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(420px, 1.4fr);
+    gap: 18px;
+}
+
+.column { display: grid; gap: 18px; align-content: start; }
+
+/* PANEL */
+.panel {
+    background: white;
+    border: 1px solid #e2ebf8;
+    border-radius: 11px;
+    padding: 18px;
+    box-shadow: 0 4px 14px #244a780a;
+}
+
+.panel-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.panel-heading h3 { font-size: 16px; }
+.sub { font-size: 11px; color: var(--muted); margin-top: 5px; }
+.mt-10 { margin-top: 10px; }
+.mt-5  { margin-top: 5px; }
+
+/* TOMBOL */
+.btn {
+    border: none;
+    border-radius: 7px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    transition: .2s;
+}
+
+.btn-primary { background: var(--blue); color: white; }
+.btn-primary:hover { background: var(--blue-dark); }
+.btn-secondary { background: #eef4fc; color: var(--text); }
+.btn-danger { background: #ffe4e4; color: #c92c2c; }
+
+/* LAPORAN */
+.report-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 14px;
+    width: 100%;
+}
+
+.report-grid.six { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+
+.report-filters {
+    display: flex;
+    align-items: end;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin: 18px 0;
+}
+
+.report-filters .form-group { min-width: 180px; }
+
+.report-item {
+    width: 100%;
+    height: 140px;
+    padding: 20px;
+    border-radius: 10px;
+    background: #f7faff;
+    border: 1px solid #dce8f8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.report-item span   { font-size: 13px; color: var(--muted); }
+.report-item strong { margin-top: 10px; font-size: 28px; color: var(--text); }
+
+/* TABEL */
+.table-wrap { overflow-x: auto; }
+
+.data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+
+.data-table th {
+    background: #f0f6ff;
+    color: #526b91;
+    text-align: left;
+    padding: 12px;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+}
+
+.data-table td { padding: 12px; border-bottom: 1px solid #e6eef9; }
+.data-table tbody tr:hover { background: #f8fbff; }
+
+.kosong { text-align: center; color: var(--muted); padding: 36px 12px !important; }
+
+.status {
+    display: inline-block;
+    border-radius: 20px;
+    padding: 6px 12px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.status-hadir     { color: #07845d; background: #dcf7ec; }
+.status-belum     { color: #64748b; background: #eef2f7; }
+.status-izin      { color: #a66b00; background: #fff1cc; }
+.status-sakit     { color: #1479ed; background: #e2efff; }
+.status-terlambat { color: #7c3aed; background: #eee7ff; }
+
+.status-select {
+    border: 1px solid #d5e2f3;
+    background: white;
+    border-radius: 6px;
+    padding: 7px;
+    font-size: 11px;
+    color: var(--text);
+    cursor: pointer;
+}
+
+/* FORM */
+.form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px; }
+
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group label { font-size: 12px; font-weight: 600; }
+
+.form-group input,
+.form-group select {
+    border: 1px solid #d5e2f3;
+    border-radius: 7px;
+    padding: 10px;
+    outline: none;
+    font-size: 13px;
+}
+
+.form-actions { margin-top: 18px; display: flex; gap: 8px; }
+
+.class-card {
+    border: 1px solid #e0eafb;
+    border-radius: 10px;
+    padding: 20px;
+    background: #f9fbff;
+}
+
+.class-card h2 { font-size: 24px; margin-bottom: 7px; }
+.class-card p  { color: var(--muted); font-size: 13px; }
+
+/* TOAST */
+.toast {
+    position: fixed;
+    bottom: 22px;
+    right: 22px;
+    background: #123466;
+    color: white;
+    padding: 14px 18px;
+    border-radius: 9px;
+    box-shadow: 0 8px 30px #0002;
+    display: none;
+    z-index: 100;
+    font-size: 13px;
+    max-width: 360px;
+}
+
+/* RESPONSIF */
+@media (max-width: 1200px) {
+    .sidebar { width: 235px; }
+    .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .dashboard-grid { grid-template-columns: 1fr; }
+    .report-grid,
+    .report-grid.six { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 760px) {
+    .sidebar {
+        position: fixed;
+        z-index: 50;
+        left: -270px;
+        top: 0;
+        bottom: 0;
+        transition: left .25s;
+        width: 260px;
+    }
+
+    .sidebar.open { left: 0; }
+    .menu-toggle { display: block; }
+    .topbar { padding: 10px 14px; }
+    .welcome h1 { font-size: 16px; }
+    .welcome p { display: none; }
+    .content { padding: 14px; }
+    .stats { grid-template-columns: 1fr; }
+    .form-grid { grid-template-columns: 1fr; }
+    .report-grid,
+    .report-grid.six { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 450px) {
+    .report-grid,
+    .report-grid.six { grid-template-columns: 1fr; }
+}
+
+/* CETAK */
+@media print {
+    .sidebar, .topbar, .btn, .status-select, .report-filters { display: none !important; }
+    .main { width: 100%; }
+    .content { padding: 0; }
+    .page { display: none !important; }
+    #page-laporan { display: block !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="brand">
+            <h2>SMK NUSANTARA 1</h2>
+            <p>Sistem Absensi Sekolah</p>
+        </div>
+
+        <nav class="nav">
+            <button class="nav-btn active" data-page="dashboard">Dashboard</button>
+            <button class="nav-btn" data-page="siswa">Data Siswa</button>
+            <button class="nav-btn" data-page="kelas">Data Kelas</button>
+            <button class="nav-btn" data-page="absensi">Absensi</button>
+            <button class="nav-btn" data-page="laporan">Laporan</button>
+            <button class="nav-btn" data-page="pengaturan">Pengaturan</button>
+        </nav>
+
+    </aside>
+
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+                <button class="menu-toggle" id="menuToggle">Menu</button>
+
+                <div class="welcome">
+                    <h1 id="pageTitle">Dashboard</h1>
+                    <p id="pageDescription">Kelola data sekolah dan pantau kehadiran siswa.</p>
+                </div>
+            </div>
+
+            <div class="admin-info">
+                <div class="datetime">
+                    <div class="date"><span id="currentDate">Memuat tanggal...</span></div>
+                    <div class="time"><span id="currentTime">00:00:00</span></div>
+                </div>
+            </div>
+
+        </header>
+
+
+        <div class="content">
+
+            <!-- DASHBOARD -->
+            <section class="page active" id="page-dashboard">
+
+                <section class="stats">
+
+                    <article class="stat">
+                        <div class="stat-icon blue">Siswa</div>
+                        <div>
+                            <div class="stat-label">Total Siswa</div>
+                            <div class="stat-value jumlah-siswa">0</div>
+                            <div class="stat-note">Siswa kelas XI RPL</div>
+                        </div>
+                    </article>
+
+                    <article class="stat">
+                        <div class="stat-icon yellow">Kelas</div>
+                        <div>
+                            <div class="stat-label">Kelas</div>
+                            <div class="stat-value">XI RPL</div>
+                            <div class="stat-note">1 kelas</div>
+                        </div>
+                    </article>
+
+                    <article class="stat">
+                        <div class="stat-icon red">Absen</div>
+                        <div>
+                            <div class="stat-label">Sudah Absen</div>
+                            <div class="stat-value" id="totalSudahAbsen">0</div>
+                            <div class="stat-note">Dari <span class="jumlah-siswa">0</span> siswa</div>
+                        </div>
+                    </article>
+
+                </section>
+
+                <section class="banner">
+                    <h2>SMK NUSANTARA 1</h2>
+                    <p>Kelas XI RPL - Sistem Absensi Siswa</p>
+                </section>
+
+                <div class="dashboard-grid">
+
+                    <div class="column">
+                        <section class="panel">
+                            <div class="panel-heading">
+                                <h3>Status Kehadiran Hari Ini</h3>
+                                <button class="btn btn-primary" id="btnKelolaAbsensi">Kelola Absensi</button>
+                            </div>
+
+                            <div class="report-grid">
+                                <div class="report-item"><span>Hadir</span><strong id="dashboardHadir">0</strong></div>
+                                <div class="report-item"><span>Tidak Hadir</span><strong id="dashboardTidakHadir">0</strong></div>
+                                <div class="report-item"><span>Izin</span><strong id="dashboardIzin">0</strong></div>
+                                <div class="report-item"><span>Sakit</span><strong id="dashboardSakit">0</strong></div>
+                                <div class="report-item"><span>Terlambat</span><strong id="dashboardTerlambat">0</strong></div>
+                            </div>
+                        </section>
+                    </div>
+
+                    <div class="column">
+                        <section class="panel">
+                            <div class="panel-heading"><h3>Informasi Kelas</h3></div>
+
+                            <div class="class-card">
+                                <h2>XI RPL</h2>
+                                <p>Rekayasa Perangkat Lunak</p>
+                                <p class="mt-10">Jumlah siswa: <strong><span class="jumlah-siswa">0</span> siswa</strong></p>
+                                <p class="mt-5">Status: <strong>Aktif</strong></p>
+                            </div>
+                        </section>
+                    </div>
+
+                </div>
+            </section>
+
+
+            <!-- DATA SISWA -->
+            <section class="page" id="page-siswa">
+                <div class="panel">
+
+                    <div class="panel-heading">
+                        <div>
+                            <h3>Data Siswa</h3>
+                            <p class="sub">Daftar <span class="jumlah-siswa">0</span> siswa kelas XI RPL</p>
+                        </div>
+                    </div>
+
+                    <div class="table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>ID Absen</th>
+                                    <th>Nama Siswa</th>
+                                    <th>NIS</th>
+                                    <th>Kelas</th>
+                                    <th>Status Hari Ini</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="studentTable"></tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </section>
+
+
+            <!-- DATA KELAS -->
+            <section class="page" id="page-kelas">
+                <div class="panel">
+
+                    <div class="panel-heading"><h3>Data Kelas</h3></div>
+
+                    <div class="class-card">
+                        <h2>XI RPL</h2>
+                        <p>Rekayasa Perangkat Lunak</p>
+                        <p class="mt-10">Jumlah siswa: <strong><span class="jumlah-siswa">0</span> siswa</strong></p>
+                        <p class="mt-5">Status: <strong>Aktif</strong></p>
+                    </div>
+
+                </div>
+            </section>
+
+
+            <!-- ABSENSI -->
+            <section class="page" id="page-absensi">
+                <div class="panel">
+
+                    <div class="panel-heading">
+                        <div>
+                            <h3>Absensi Hari Ini</h3>
+                            <p class="sub">Perubahan status langsung tersimpan ke database.</p>
+                        </div>
+
+                        <button class="btn btn-primary" id="btnSemuaHadir">Tandai Semua Hadir</button>
+                    </div>
+
+                    <div class="table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>ID Absen</th>
+                                    <th>Nama Siswa</th>
+                                    <th>NIS</th>
+                                    <th>Kelas</th>
+                                    <th>Status</th>
+                                    <th>Ubah Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="attendanceTable"></tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </section>
+
+
+            <!-- LAPORAN -->
+            <section class="page" id="page-laporan">
+                <div class="panel">
+
+                    <div class="panel-heading">
+                        <div>
+                            <h3>Laporan Absensi</h3>
+                            <p class="sub">Riwayat absensi siswa yang tercatat di database.</p>
+                        </div>
+
+                        <button class="btn btn-primary" id="btnCetak">Cetak Laporan</button>
+                    </div>
+
+                    <div class="report-grid six">
+                        <div class="report-item"><span>Total Presensi</span><strong id="reportTotal">0</strong></div>
+                        <div class="report-item"><span>Hadir</span><strong id="reportHadir">0</strong></div>
+                        <div class="report-item"><span>Tidak Hadir</span><strong id="reportTidakHadir">0</strong></div>
+                        <div class="report-item"><span>Izin</span><strong id="reportIzin">0</strong></div>
+                        <div class="report-item"><span>Sakit</span><strong id="reportSakit">0</strong></div>
+                        <div class="report-item"><span>Terlambat</span><strong id="reportTerlambat">0</strong></div>
+                    </div>
+
+                    <div class="report-filters">
+                        <div class="form-group">
+                            <label for="reportDateStart">Dari tanggal</label>
+                            <input type="date" id="reportDateStart">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="reportDateEnd">Sampai tanggal</label>
+                            <input type="date" id="reportDateEnd">
+                        </div>
+                    </div>
+
+                    <div class="table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Tanggal</th>
+                                    <th>Jam</th>
+                                    <th>No. Absen</th>
+                                    <th>ID Siswa</th>
+                                    <th>Nama Siswa</th>
+                                    <th>NIS</th>
+                                    <th>Kelas</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reportTable">
+                                <tr><td colspan="9" class="kosong">Memuat laporan...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </section>
+
+
+            <!-- PENGATURAN -->
+            <section class="page" id="page-pengaturan">
+                <div class="panel">
+
+                    <div class="panel-heading"><h3>Pengaturan Sistem</h3></div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="schoolName">Nama Sekolah</label>
+                            <input type="text" id="schoolName" value="SMK NUSANTARA 1">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="className">Nama Kelas</label>
+                            <input type="text" id="className" value="XI RPL">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="schoolStart">Jam Mulai Sekolah</label>
+                            <input type="time" id="schoolStart" value="07:00">
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="btn btn-primary" id="btnSimpanPengaturan">Simpan Pengaturan</button>
+                    </div>
+
+                </div>
+            </section>
+
+        </div>
+    </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   KONFIGURASI
+   ========================================================= */
+
+const URL_API_SISWA     = "siswa.php";
+const URL_API_KEHADIRAN = "kehadiran.php";
+const WAKTU_REFRESH     = 15000;
+
+const STATUS_LIST = ["Belum Absen", "Hadir", "Tidak Hadir", "Izin", "Sakit", "Terlambat"];
+
+const pageInfo = {
+    dashboard:  { title: "Dashboard",  description: "Kelola data sekolah dan pantau kehadiran siswa." },
+    siswa:      { title: "Data Siswa", description: "Kelola daftar siswa kelas XI RPL." },
+    kelas:      { title: "Data Kelas", description: "Kelola data kelas yang tersedia." },
+    absensi:    { title: "Absensi",    description: "Kelola status kehadiran siswa hari ini." },
+    laporan:    { title: "Laporan",    description: "Lihat dan cetak laporan absensi." },
+    pengaturan: { title: "Pengaturan", description: "Atur konfigurasi sistem absensi." }
+};
+
+
+/* Data cadangan: dipakai kalau siswa.php / database tidak bisa dihubungi */
+const SISWA_CADANGAN = [
+    {
+        "id": "A7K29P",
+        "nomor_absen": 1,
+        "nama": "Siswa 1",
+        "nis": null,
+        "kelas": "XI RPL"
+    },
+    {
+        "id": "M4Q81X",
+        "nomor_absen": 2,
+        "nama": "Siswa 2",
+        "nis": null,
+        "kelas": "XI RPL"
+    },
+    {
+        "id": "B6T53L",
+        "nomor_absen": 3,
+        "nama": "Siswa 3",
+        "nis": null,
+        "kelas": "XI RPL"
+    },
+    {
+        "id": "R8N42C",
+        "nomor_absen": 4,
+        "nama": "Alif Fashha Rasyiqul Azam",
+        "nis": "10250148",
+        "kelas": "XI RPL"
+    },
+    {
+        "id": "K3V97H",
+        "nomor_absen": 5,
+        "nama": "Althafa Rezka F",
+        "nis": "10250149",
+        "kelas": "XI RPL"
+    },
+    {
+        "id": "P5D28W",
+        "nomor_absen": 6,
+        "nama": "Siswa 6",
+        "nis": null,
+        "kelas": "XI RPL"
+    },
+    {
+        "id": "X9F61J",
+        "nomor_absen": 7,
+        "nama": "Siswa 7",
+        "nis": null,
+        "kelas": "XI RPL"
+    },
+    {
+        "id": "C2L74Z",
+        "nomor_absen": 8,
+        "nama": "Siswa 8",
+        "nis": null,
+        "kelas": "XI RPL"
+    },
+    {
+        "id": "N7Q35A",
+        "nomor_absen": 9,
+        "nama": "Pando",
+        "nis": "10250155",
+        "kelas": "XI RPL"
+    },
+    {
+        "id": "H4Y82M",
+        "nomor_absen": 10,
+        "nama": "Faris Azisya Ramadhan",
+        "nis": "10250156",
+        "kelas": "XI RPL"
+    },
+    {
+        "id": "T6B49K",
+        "nomor_absen": 11,
+        "nama": "Siswa 11",
+        "nis": null,
+        "kelas": "XI RPL"
+    },
+    {
+        "id": "W3R75F",
+        "nomor_absen": 12,
+        "nama": "Siswa 12",
+        "nis": null,
+        "kelas": "XI RPL"
+    },
+    {
+        "id": "J8P24D",
+        "nomor_absen": 13,
+        "nama": "Siswa 13",
+        "nis": null,
+        "kelas": "XI RPL"
+    },
+    {
+        "id": "Q5C93V",
+        "nomor_absen": 14,
+        "nama": "Siswa 14",
+        "nis": null,
+        "kelas": "XI RPL"
+    },
+    {
+        "id": "L7X46N",
+        "nomor_absen": 15,
+        "nama": "Siswa 15",
+        "nis": null,
+        "kelas": "XI RPL"
+    },
+    {
+        "id": "F2M85R",
+        "nomor_absen": 16,
+        "nama": "Siswa 16",
+        "nis": null,
+        "kelas": "XI RPL"
+    },
+    {
+        "id": "Z9K31B",
+        "nomor_absen": 17,
+        "nama": "Siswa 17",
+        "nis": null,
+        "kelas": "XI RPL"
+    },
+    {
+        "id": "D4T67Y",
+        "nomor_absen": 18,
+        "nama": "Siswa 18",
+        "nis": null,
+        "kelas": "XI RPL"
+    },
+    {
+        "id": "V6H28Q",
+        "nomor_absen": 19,
+        "nama": "Siswa 19",
+        "nis": null,
+        "kelas": "XI RPL"
+    },
+    {
+        "id": "G3N94P",
+        "nomor_absen": 20,
+        "nama": "Helmi",
+        "nis": "10250165",
+        "kelas": "XI RPL"
+    },
+    {
+        "id": "A8W52K",
+        "nomor_absen": 21,
+        "nama": "Siswa 21",
+        "nis": null,
+        "kelas": "XI RPL"
+    },
+    {
+        "id": "M7F36C",
+        "nomor_absen": 22,
+        "nama": "Siswa 22",
+        "nis": null,
+        "kelas": "XI RPL"
+    },
+    {
+        "id": "R2J85X",
+        "nomor_absen": 23,
+        "nama": "Siswa 23",
+        "nis": null,
+        "kelas": "XI RPL"
+    },
+    {
+        "id": "P9L41D",
+        "nomor_absen": 24,
+        "nama": "Siswa 24",
+        "nis": null,
+        "kelas": "XI RPL"
+    },
+    {
+        "id": "B5Q73H",
+        "nomor_absen": 25,
+        "nama": "Siswa 25",
+        "nis": null,
+        "kelas": "XI RPL"
+    },
+    {
+        "id": "X4V68N",
+        "nomor_absen": 26,
+        "nama": "Siswa 26",
+        "nis": null,
+        "kelas": "XI RPL"
+    },
+    {
+        "id": "C7K25M",
+        "nomor_absen": 27,
+        "nama": "Siswa 27",
+        "nis": null,
+        "kelas": "XI RPL"
+    },
+    {
+        "id": "Y3T91F",
+        "nomor_absen": 28,
+        "nama": "Siswa 28",
+        "nis": null,
+        "kelas": "XI RPL"
+    },
+    {
+        "id": "H8D46R",
+        "nomor_absen": 29,
+        "nama": "Siswa 29",
+        "nis": null,
+        "kelas": "XI RPL"
+    },
+    {
+        "id": "N5W72Z",
+        "nomor_absen": 30,
+        "nama": "Siswa 30",
+        "nis": null,
+        "kelas": "XI RPL"
+    },
+    {
+        "id": "J2P84L",
+        "nomor_absen": 31,
+        "nama": "Siswa 31",
+        "nis": null,
+        "kelas": "XI RPL"
+    },
+    {
+        "id": "Q6M39V",
+        "nomor_absen": 32,
+        "nama": "Siswa 32",
+        "nis": null,
+        "kelas": "XI RPL"
+    },
+    {
+        "id": "F8R51B",
+        "nomor_absen": 33,
+        "nama": "Siswa 33",
+        "nis": null,
+        "kelas": "XI RPL"
+    },
+    {
+        "id": "T4X76C",
+        "nomor_absen": 34,
+        "nama": "Siswa 34",
+        "nis": null,
+        "kelas": "XI RPL"
+    }
+];
+
+/* =========================================================
+   STATE (sumber data: database)
+   ========================================================= */
+
+let students          = [];   // dari siswa.php
+let attendanceRecords = [];   // semua riwayat dari kehadiran.php
+let attendance        = {};   // status hari ini per siswa.id
+
+
+/* =========================================================
+   UTIL
+   ========================================================= */
+
+function getToday() {
+    const now = new Date();
+    return [
+        now.getFullYear(),
+        String(now.getMonth() + 1).padStart(2, "0"),
+        String(now.getDate()).padStart(2, "0")
+    ].join("-");
+}
+
+function buatEl(tag, teks, kelas) {
+    const el = document.createElement(tag);
+    if (teks !== undefined && teks !== null) el.textContent = teks;
+    if (kelas) el.className = kelas;
+    return el;
+}
+
+function tambahSel(baris, nilai) {
+    baris.appendChild(buatEl("td", nilai));
+}
+
+function buatBadgeStatus(status) {
+    return buatEl("span", status, "status " + getStatusClass(status));
+}
+
+function getStatusClass(status) {
+    switch (status) {
+        case "Hadir":       return "status-hadir";
+        case "Izin":        return "status-izin";
+        case "Sakit":       return "status-sakit";
+        case "Terlambat":   return "status-terlambat";
+        default:            return "status-belum";
+    }
+}
+
+function setText(id, nilai) {
+    document.getElementById(id).textContent = nilai;
+}
+
+let timerToast = null;
+
+function showToast(pesan) {
+    const toast = document.getElementById("toast");
+    toast.textContent = pesan;
+    toast.style.display = "block";
+
+    clearTimeout(timerToast);
+    timerToast = setTimeout(function () { toast.style.display = "none"; }, 2800);
+}
+
+function jelaskanKesalahanServer(teks) {
+    if (/^\s*<\?php/i.test(teks)) {
+        return "PHP tidak dijalankan (kode PHP tampil sebagai teks). Buka lewat http://localhost/... dengan Apache XAMPP, bukan Live Server.";
+    }
+
+    const ringkas = teks.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim().slice(0, 160);
+    return "Respons server bukan JSON: " + (ringkas || "(kosong)");
+}
+
+async function panggilApi(url, opsi = {}) {
+    let response;
+
+    try {
+        response = await fetch(url, { cache: "no-store", ...opsi });
+    } catch (e) {
+        throw new Error(
+            location.protocol === "file:"
+                ? "Halaman dibuka lewat file://. Buka lewat http://localhost/... (XAMPP) agar PHP berjalan."
+                : "Tidak bisa menghubungi server. Pastikan Apache & MySQL di XAMPP sudah Start."
+        );
+    }
+
+    const teks = await response.text();
+    let hasil;
+
+    try {
+        hasil = JSON.parse(teks);
+    } catch (e) {
+        throw new Error(jelaskanKesalahanServer(teks));
+    }
+
+    if (!response.ok || !hasil.success) {
+        throw new Error(hasil.message || "Permintaan gagal");
+    }
+
+    return hasil;
+}
+
+function kirimAksi(payload) {
+    return panggilApi(URL_API_KEHADIRAN, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+    });
+}
+
+
+/* =========================================================
+   LOAD DATA DARI DATABASE
+   ========================================================= */
+
+async function muatData(tampilkanError = false) {
+    try {
+        if (students.length === 0) {
+            try {
+                students = (await panggilApi(URL_API_SISWA)).data;
+            } catch (e) {
+                students = SISWA_CADANGAN;
+                if (tampilkanError) showToast("Database belum terhubung, menampilkan data siswa cadangan.");
+            }
+        }
+
+        try {
+            attendanceRecords = (await panggilApi(URL_API_KEHADIRAN)).data;
+        } catch (e) {
+            attendanceRecords = [];
+            renderSemuaTanpaStatus();
+            throw e;
+        }
+
+        attendance = {};
+        students.forEach(function (s) {
+            attendance[s.id] = { status: "Belum Absen", waktu: null };
+        });
+
+        const hariIni = getToday();
+
+        attendanceRecords
+            .filter(function (r) { return r.tanggal === hariIni; })
+            .forEach(function (r) {
+                if (attendance[r.siswa_id]) {
+                    attendance[r.siswa_id] = { status: r.status, waktu: r.jam };
+                }
+            });
+
+        renderSemua();
+
+    } catch (error) {
+        console.error("Gagal memuat data:", error);
+        if (tampilkanError) showToast(error.message);
+    }
+}
+
+function renderSemuaTanpaStatus() {
+    attendance = {};
+    students.forEach(function (s) { attendance[s.id] = { status: "Belum Absen", waktu: null }; });
+    renderSemua();
+}
+
+function renderSemua() {
+    renderStudents();
+
+    /* jangan render ulang dropdown saat admin sedang memilih status */
+    const aktif = document.activeElement;
+    if (!(aktif && aktif.classList && aktif.classList.contains("status-select"))) {
+        renderAttendance();
+    }
+
+    renderAttendanceReport();
+    updateDashboard();
+}
+
+
+/* =========================================================
+   RENDER DATA SISWA
+   ========================================================= */
+
+function renderStudents() {
+    const tabel = document.getElementById("studentTable");
+    tabel.innerHTML = "";
+
+    students.forEach(function (s) {
+        const data  = attendance[s.id] || { status: "Belum Absen" };
+        const baris = document.createElement("tr");
+
+        tambahSel(baris, s.nomor_absen);
+        tambahSel(baris, s.id);
+        tambahSel(baris, s.nama);
+        tambahSel(baris, s.nis || "-");
+        tambahSel(baris, s.kelas);
+
+        const selStatus = document.createElement("td");
+        selStatus.appendChild(buatBadgeStatus(data.status));
+        baris.appendChild(selStatus);
+
+        const selAksi = document.createElement("td");
+        const tombol  = buatEl("button", "Lihat", "btn btn-secondary");
+        tombol.addEventListener("click", function () { lihatSiswa(s.id); });
+        selAksi.appendChild(tombol);
+        baris.appendChild(selAksi);
+
+        tabel.appendChild(baris);
+    });
+}
+
+
+/* =========================================================
+   RENDER ABSENSI HARI INI
+   ========================================================= */
+
+function renderAttendance() {
+    const tabel = document.getElementById("attendanceTable");
+    tabel.innerHTML = "";
+
+    students.forEach(function (s) {
+        const data  = attendance[s.id] || { status: "Belum Absen" };
+        const baris = document.createElement("tr");
+
+        tambahSel(baris, s.nomor_absen);
+        tambahSel(baris, s.id);
+        tambahSel(baris, s.nama);
+        tambahSel(baris, s.nis || "-");
+        tambahSel(baris, s.kelas);
+
+        const selStatus = document.createElement("td");
+        selStatus.appendChild(buatBadgeStatus(data.status));
+        baris.appendChild(selStatus);
+
+        const selUbah = document.createElement("td");
+        const select  = buatEl("select", null, "status-select");
+
+        STATUS_LIST.forEach(function (nama) {
+            const opsi = new Option(nama, nama);
+            opsi.selected = nama === data.status;
+            select.add(opsi);
+        });
+
+        select.addEventListener("change", function () {
+            ubahStatus(s, select.value);
+        });
+
+        selUbah.appendChild(select);
+        baris.appendChild(selUbah);
+
+        tabel.appendChild(baris);
+    });
+}
+
+
+/* =========================================================
+   LAPORAN
+   ========================================================= */
+
+function renderAttendanceReport() {
+    const mulai   = document.getElementById("reportDateStart").value;
+    const selesai = document.getElementById("reportDateEnd").value;
+    const tabel   = document.getElementById("reportTable");
+
+    const records = attendanceRecords.filter(function (r) {
+        return (!mulai || r.tanggal >= mulai) && (!selesai || r.tanggal <= selesai);
+    });
+
+    const total = { "Hadir": 0, "Tidak Hadir": 0, "Izin": 0, "Sakit": 0, "Terlambat": 0 };
+
+    records.forEach(function (r) {
+        if (Object.prototype.hasOwnProperty.call(total, r.status)) total[r.status]++;
+    });
+
+    setText("reportTotal", records.length);
+    setText("reportHadir", total["Hadir"]);
+    setText("reportTidakHadir", total["Tidak Hadir"]);
+    setText("reportIzin", total["Izin"]);
+    setText("reportSakit", total["Sakit"]);
+    setText("reportTerlambat", total["Terlambat"]);
+
+    tabel.innerHTML = "";
+
+    if (records.length === 0) {
+        const baris = tabel.insertRow();
+        const sel = baris.insertCell();
+        sel.colSpan = 9;
+        sel.className = "kosong";
+        sel.textContent = "Belum ada catatan pada rentang tanggal ini.";
+        return;
+    }
+
+    records.forEach(function (r, i) {
+        const baris = tabel.insertRow();
+        const tanggal = r.tanggal
+            ? new Date(r.tanggal + "T00:00:00").toLocaleDateString("id-ID")
+            : "-";
+
+        [i + 1, tanggal, r.jam, r.absen, r.siswa_id, r.nama, r.nis, r.kelas, r.status]
+            .forEach(function (nilai) {
+                baris.insertCell().textContent = nilai || "-";
+            });
+    });
+}
+
+
+/* =========================================================
+   AKSI ABSENSI (tersimpan ke database)
+   ========================================================= */
+
+async function ubahStatus(siswa, status) {
+    try {
+        if (status === "Belum Absen") {
+            await kirimAksi({ aksi: "hapus", absen: siswa.nomor_absen });
+        } else {
+            await kirimAksi({ aksi: "ubah", absen: siswa.nomor_absen, status: status });
+        }
+
+        showToast("Status berhasil diubah.");
+    } catch (error) {
+        showToast(error.message);
+    }
+
+    document.activeElement.blur();
+    muatData();
+}
+
+async function tandaiSemuaHadir() {
+    if (!confirm("Apakah semua siswa ingin ditandai Hadir?")) return;
+
+    try {
+        await kirimAksi({ aksi: "semua_hadir" });
+        showToast("Semua siswa telah ditandai Hadir.");
+    } catch (error) {
+        showToast(error.message);
+    }
+
+    muatData();
+}
+
+function lihatSiswa(id) {
+    const s = students.find(function (item) { return item.id === id; });
+    if (!s) return;
+
+    window.open("user.php?id=" + encodeURIComponent(s.id), "_blank");
+}
+
+
+/* =========================================================
+   DASHBOARD
+   ========================================================= */
+
+function updateDashboard() {
+    const hitung = { "Hadir": 0, "Tidak Hadir": 0, "Izin": 0, "Sakit": 0, "Terlambat": 0 };
+    let sudahAbsen = 0;
+
+    students.forEach(function (s) {
+        const status = (attendance[s.id] || {}).status;
+
+        if (Object.prototype.hasOwnProperty.call(hitung, status)) {
+            hitung[status]++;
+            sudahAbsen++;
+        }
+    });
+
+    document.querySelectorAll(".jumlah-siswa").forEach(function (el) {
+        el.textContent = students.length;
+    });
+
+    setText("totalSudahAbsen", sudahAbsen);
+    setText("dashboardHadir", hitung["Hadir"]);
+    setText("dashboardTidakHadir", hitung["Tidak Hadir"]);
+    setText("dashboardIzin", hitung["Izin"]);
+    setText("dashboardSakit", hitung["Sakit"]);
+    setText("dashboardTerlambat", hitung["Terlambat"]);
+}
+
+
+/* =========================================================
+   NAVIGASI
+   ========================================================= */
+
+function openPage(page) {
+    document.querySelectorAll(".page").forEach(function (p) { p.classList.remove("active"); });
+
+    const target = document.getElementById("page-" + page);
+    if (target) target.classList.add("active");
+
+    document.querySelectorAll(".nav-btn").forEach(function (b) {
+        b.classList.toggle("active", b.dataset.page === page);
+    });
+
+    if (pageInfo[page]) {
+        setText("pageTitle", pageInfo[page].title);
+        setText("pageDescription", pageInfo[page].description);
+    }
+
+    if (window.innerWidth <= 760) {
+        document.getElementById("sidebar").classList.remove("open");
+    }
+}
+
+document.querySelectorAll(".nav-btn").forEach(function (button) {
+    button.addEventListener("click", function () { openPage(button.dataset.page); });
+});
+
+document.getElementById("menuToggle").addEventListener("click", function () {
+    document.getElementById("sidebar").classList.toggle("open");
+});
+
+
+/* =========================================================
+   TANGGAL & JAM
+   ========================================================= */
+
+function updateDateTime() {
+    const now = new Date();
+
+    setText("currentDate", now.toLocaleDateString("id-ID", {
+        weekday: "long", year: "numeric", month: "long", day: "numeric"
+    }));
+
+    setText("currentTime", now.toLocaleTimeString("id-ID", {
+        hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false
+    }));
+}
+
+
+/* =========================================================
+   PENGATURAN (disimpan di peramban)
+   ========================================================= */
+
+const KUNCI_PENGATURAN = ["schoolName", "className", "schoolStart"];
+
+function muatPengaturan() {
+    try {
+        KUNCI_PENGATURAN.forEach(function (kunci) {
+            const nilai = localStorage.getItem(kunci);
+            if (nilai) document.getElementById(kunci).value = nilai;
+        });
+    } catch (e) { /* abaikan */ }
+}
+
+function simpanPengaturan() {
+    try {
+        KUNCI_PENGATURAN.forEach(function (kunci) {
+            localStorage.setItem(kunci, document.getElementById(kunci).value);
+        });
+        showToast("Pengaturan berhasil disimpan.");
+    } catch (e) {
+        showToast("Pengaturan gagal disimpan di peramban.");
+    }
+}
+
+
+/* =========================================================
+   EVENT & INISIALISASI
+   ========================================================= */
+
+document.getElementById("btnKelolaAbsensi").addEventListener("click", function () { openPage("absensi"); });
+document.getElementById("btnSemuaHadir").addEventListener("click", tandaiSemuaHadir);
+document.getElementById("btnCetak").addEventListener("click", function () { window.print(); });
+document.getElementById("btnSimpanPengaturan").addEventListener("click", simpanPengaturan);
+document.getElementById("reportDateStart").addEventListener("change", renderAttendanceReport);
+document.getElementById("reportDateEnd").addEventListener("change", renderAttendanceReport);
+
+updateDateTime();
+setInterval(updateDateTime, 1000);
+
+muatPengaturan();
+
+document.getElementById("reportDateStart").value = getToday();
+document.getElementById("reportDateEnd").value   = getToday();
+
+muatData(true);
+setInterval(muatData, WAKTU_REFRESH);
+</script>
+
+</body>
+</html>
